@@ -39,12 +39,20 @@ const projects = [
 
 export default function ProjectsSection() {
   return (
-    <section id="projects" className="py-20">
+    <section id="projects" className="py-20 bg-neutral-200 dark:bg-zinc-900">
       <div className="container mx-auto max-w-6xl px-4 text-center">
-        <h2 className="text-3xl font-bold mb-12">Featured Projects</h2>
+        {/* Glowing Gradient Heading */}
+        <h2
+          className="text-4xl font-extrabold tracking-wide mb-14
+          text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-fuchsia-500 to-pink-500
+          shadow-[0_0_30px_rgba(0,200,255,0.4)] dark:shadow-[0_0_30px_rgba(255,255,255,0.1)]
+          backdrop-blur-md p-4 rounded-xl border border-blue-300 dark:border-white/10 inline-block"
+        >
+          Featured Projects
+        </h2>
 
-        {/* 3 × 2 grid on large screens */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {/* Project Grid */}
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((p) => (
             <ProjectCard key={p.title} {...p} />
           ))}
@@ -60,12 +68,20 @@ function ProjectCard({ title, desc, link, image }) {
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="block bg-white dark:bg-zinc-800 rounded-lg shadow hover:shadow-lg overflow-hidden"
+      className="group rounded-xl overflow-hidden transition-transform hover:-translate-y-1
+      border border-sky-200 bg-white dark:bg-zinc-800
+      shadow-[0_8px_24px_rgba(0,200,255,0.15)]
+      hover:shadow-[0_0_30px_rgba(0,200,255,0.35),0_0_40px_rgba(255,0,255,0.2)]
+      hover:border-pink-400 hover:ring-2 hover:ring-cyan-300
+      hover:ring-offset-2 hover:ring-offset-neutral-200 dark:hover:ring-offset-zinc-900
+      backdrop-blur-lg duration-500"
     >
       <img src={image} alt={title} className="w-full h-48 object-cover" />
-      <div className="p-6 text-left space-y-2">
-        <h3 className="text-xl font-semibold">{title}</h3>
-        <p className="text-sm opacity-80">{desc}</p>
+      <div className="p-5 text-left space-y-2">
+        <h3 className="text-lg font-bold text-slate-800 dark:text-white group-hover:text-blue-600">
+          {title}
+        </h3>
+        <p className="text-sm text-slate-600 dark:text-zinc-300">{desc}</p>
       </div>
     </a>
   )

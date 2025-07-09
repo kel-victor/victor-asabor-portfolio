@@ -1,51 +1,70 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { Code2, ShieldCheck, Bug, Smartphone, Search, Zap, Palette } from 'lucide-react'
+
+
+// Sample icons assigned per category
+const categories = ['All', 'Design', 'Development', 'Security']
 
 const services = [
   {
     title: 'Web Design',
-    icon: 'palette',
-    description:
-      'Stunning, modern, and user-centric designs that give your brand a strong digital identity.',
+    category: 'Design',
+    icon: <Palette size={24} className="text-blue-500" />, 
+    description: 'Stunning, modern, and user-centric designs that give your brand a strong digital identity.',
     image: '/web-design.jpg',
+    lottie: '/lotties/design.json',
   },
   {
     title: 'Responsive Development',
-    icon: 'smartphone',
-    description:
-      'Seamless experiences across all devices — mobile, tablet, and desktop.',
+    category: 'Development',
+    icon: <Smartphone size={24} className="text-green-500" />, 
+    description: 'Seamless experiences across all devices — mobile, tablet, and desktop.',
     image: '/responsive.jpg',
+    lottie: '/lotties/responsive.json',
   },
   {
     title: 'Performance Tuning',
-    icon: 'zap',
-    description:
-      'Speed optimization techniques that ensure your site loads fast and performs great.',
+    category: 'Development',
+    icon: <Zap size={24} className="text-yellow-500" />, 
+    description: 'Speed optimization techniques that ensure your site loads fast and performs great.',
     image: '/performance.jpg',
+    lottie: '/lotties/performance.json',
   },
   {
     title: 'SEO Optimization',
-    icon: 'search',
-    description:
-      'Boost your visibility and ranking on Google with proven SEO strategies.',
+    category: 'Development',
+    icon: <Search size={24} className="text-pink-500" />, 
+    description: 'Boost your visibility and ranking on Google with proven SEO strategies.',
     image: '/seo.jpg',
+    lottie: '/lotties/seo.json',
   },
   {
     title: 'Security Audit',
-    icon: 'shield',
-    description:
-      'Comprehensive audits to identify vulnerabilities and enhance website security.',
+    category: 'Security',
+    icon: <ShieldCheck size={24} className="text-red-500" />, 
+    description: 'Comprehensive audits to identify vulnerabilities and enhance website security.',
     image: '/security.jpg',
+    lottie: '/lotties/security.json',
   },
   {
     title: 'Bug Fixing',
-    icon: 'bug',
-    description:
-      'Reliable debugging to ensure your platform runs smoothly and error-free.',
+    category: 'Security',
+    icon: <Bug size={24} className="text-indigo-500" />, 
+    description: 'Reliable debugging to ensure your platform runs smoothly and error-free.',
     image: '/bug.jpg',
+    lottie: '/lotties/bug.json',
   },
 ]
 
 export default function ServicesSection() {
+  const [activeCategory, setActiveCategory] = useState('All')
+
+  const filteredServices =
+    activeCategory === 'All'
+      ? services
+      : services.filter(service => service.category === activeCategory)
+
   return (
     <motion.section
       id="services"
@@ -56,18 +75,42 @@ export default function ServicesSection() {
       transition={{ duration: 0.8 }}
     >
       <div className="container mx-auto max-w-6xl px-4">
-        <h2 className="text-3xl font-bold text-center mb-4">Services</h2>
-        <p className="text-center max-w-3xl mx-auto mb-12 text-zinc-600 dark:text-zinc-300">
-          I help businesses and brands — from startups to enterprises — build powerful, scalable,
-          and secure digital solutions. With a blend of technical expertise and creative strategy,
-          I make online growth effortless. Let&apos;s collaborate and create results you’ll be proud of.
-        </p>
+        {/* Animated glass heading */}
+        <motion.h2
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl font-extrabold text-transparent bg-clip-text text-center mb-6
+          bg-gradient-to-br from-blue-600 via-fuchsia-500 to-pink-500
+          shadow-[0_0_30px_rgba(0,200,255,0.3)] backdrop-blur rounded-xl inline-block border border-blue-300 dark:border-white/10"
+        >
+          SERVICES
+        </motion.h2>
 
+        {/* Category Filter */}
+        <div className="flex justify-center gap-4 flex-wrap mb-10 mt-4">
+          {categories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition duration-300
+                ${activeCategory === cat
+                ? 'bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-md'
+                : 'bg-gray-200 dark:bg-zinc-700 text-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-zinc-600'}`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Services Grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => (
+          {filteredServices.map((service, index) => (
             <motion.div
               key={service.title}
-              className="p-6 backdrop-blur rounded-lg bg-white/70 dark:bg-zinc-800/70 shadow-md hover:shadow-xl transition"
+              className="p-6 rounded-lg bg-gray-100 dark:bg-zinc-800 shadow-[0_10px_50px_rgba(0,200,255,0.2)]
+                hover:shadow-[0_0_30px_rgba(0,200,255,0.3),0_0_30px_rgba(255,0,255,0.15)]
+                border border-transparent hover:border-cyan-300 backdrop-blur-md transition duration-500"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -78,8 +121,15 @@ export default function ServicesSection() {
                 alt={service.title}
                 className="w-full h-40 object-cover rounded-md mb-4"
               />
-              <p className="text-xl font-semibold mb-2">{service.title}</p>
-              <p className="text-sm opacity-75">{service.description}</p>
+              <div className="flex items-center gap-2 mb-2">
+                {service.icon}
+                <p className="text-lg font-bold text-slate-800 dark:text-white">
+                  {service.title}
+                </p>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                {service.description}
+              </p>
             </motion.div>
           ))}
         </div>
